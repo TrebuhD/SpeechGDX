@@ -9,4 +9,6 @@ public interface ActionResolver {
                              String alertBoxButtonText);
     public void openUri(String uri);
     public void showMyList();
+
+    public void showSpeechPopup();
 }
