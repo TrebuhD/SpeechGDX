@@ -10,11 +10,10 @@ import android.widget.Toast;
 import com.badlogic.gdx.Gdx;
 import com.uam.kck.antminer.ActionResolver;
 
-
 /**
  * Created by hubert on 19.10.14.
  */
-public class ActionResolverAndroid implements ActionResolver {
+public class ActionResolverAndroid extends Activity implements ActionResolver {
     public static final int REQUEST_OK = 1;
 
     Handler uiThread;
@@ -51,15 +50,4 @@ public class ActionResolverAndroid implements ActionResolver {
             }
         });
     }
-
-    //protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    //    super.onActivityResult(requestCode, resultCode, data);
-    //    if (requestCode == REQUEST_OK && resultCode == RESULT_OK) {
-    //        ArrayList<String> thingsYouSaid =
-    //                data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-    //
-    //        //TODO: do something with the text
-    //        showToast(thingsYouSaid.get(0), 5000);
-    //    }
-    //}
 }
