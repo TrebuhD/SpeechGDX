@@ -1,4 +1,4 @@
-package com.uam.kck.antminer.android;
+package com.uam.kck.SpeechGDX.android;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.speech.RecognizerIntent;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
-import com.uam.kck.antminer.SceneTest;
+import com.uam.kck.SpeechGDX.SpeechGDX;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public class AndroidLauncher extends AndroidApplication {
 
     ActionResolverAndroid actionResolver;
 
-    SceneTest sceneTest;
+    SpeechGDX speechGDX;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +23,8 @@ public class AndroidLauncher extends AndroidApplication {
 
         actionResolver = new ActionResolverAndroid(this);
 
-        sceneTest = new SceneTest(actionResolver);
-        initialize(sceneTest);
+        speechGDX = new SpeechGDX(actionResolver);
+        initialize(speechGDX);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -36,7 +36,7 @@ public class AndroidLauncher extends AndroidApplication {
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
             // ..and pass it to the textField:
-            sceneTest.setTextFieldText(thingsYouSaid.get(0));
+            speechGDX.setTextFieldText(thingsYouSaid.get(0));
             Gdx.app.log("you said: ", thingsYouSaid.get(0));
         }
     }

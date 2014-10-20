@@ -1,4 +1,4 @@
-package com.uam.kck.antminer;
+package com.uam.kck.SpeechGDX;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -15,10 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 /**
- * Test environment for Scene2d.
  * Created by hubert on 20.10.14.
  */
-public class SceneTest implements ApplicationListener {
+public class SpeechGDX implements ApplicationListener {
     GL20 gl;
     ActionResolver actionResolver; // this exists to be able to call native Android methods.
 
@@ -28,7 +27,7 @@ public class SceneTest implements ApplicationListener {
 
     TextField textField;
 
-    public SceneTest(ActionResolver actionResolver) { this.actionResolver = actionResolver; }
+    public SpeechGDX(ActionResolver actionResolver) { this.actionResolver = actionResolver; }
 
     // We create an actor to perform on our stage:
     public class MicButton extends Actor {
@@ -72,7 +71,8 @@ public class SceneTest implements ApplicationListener {
         textField.setY(Gdx.graphics.getHeight() - 300);
         textField.setWidth(500);
         textField.setHeight(80);
-        //textField.setDisabled(true);
+
+        textField.setDisabled(true);
 
         stage.addActor(textField);
         stage.addActor(micButton);
