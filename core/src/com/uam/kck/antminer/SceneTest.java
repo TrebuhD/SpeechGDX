@@ -6,32 +6,45 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.RotateToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 /**
+ * Test environment for Scene2d.
  * Created by hubert on 20.10.14.
  */
 public class SceneTest implements ApplicationListener {
     GL20 gl;
-    ActionResolver actionResolver;
+    ActionResolver actionResolver; // this exists to be able to call native Android methods.
+
+    // We create the main stage:
     private Stage stage;
+    private Skin skin;
+
+    TextField textField;
 
     public SceneTest(ActionResolver actionResolver) { this.actionResolver = actionResolver; }
 
-    public class MyActor extends Actor {
-        Texture texture = new Texture(Gdx.files.internal("ant.jpg"));
-        public boolean started = false;
+    // We create an actor to perform on our stage:
+    public class MicButton extends Actor {
+        Texture texture = new Texture(Gdx.files.internal("mic.jpg"));
 
-        public boolean isStarted() {
-            return started;
-        }
-
-        public MyActor() {
+        public MicButton() {
             setBounds(getX(), getY(), texture.getWidth(), texture.getHeight());
+            setPosition(Gdx.graphics.getWidth()/2f - texture.getWidth() / 2, 100);
+
+            addListener(new InputListener(){
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    actionResolver.showSpeechPopup();
+                    return true;
+                }
+            });
         }
 
         @Override
@@ -47,44 +60,51 @@ public class SceneTest implements ApplicationListener {
     public void create() {
         gl = Gdx.app.getGraphics().getGL20();
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        skin = new Skin(Gdx.files.internal("Scene2D/uiskin.json"));
+
         Gdx.input.setInputProcessor(stage);
 
-        MyActor myActor = new MyActor();
+        MicButton micButton = new MicButton();
+        micButton.setTouchable(Touchable.enabled);
 
-        MoveToAction moveAction = new MoveToAction();
-        RotateToAction rotateAction = new RotateToAction();
-        ScaleToAction scaleAction = new ScaleToAction();
+        textField = new TextField("\tTap the mic icon to speak", skin);
+        textField.setX(Gdx.graphics.getWidth() / 2 - textField.getWidth() * 2);
+        textField.setY(Gdx.graphics.getHeight() - 300);
+        textField.setWidth(500);
+        textField.setHeight(80);
+        //textField.setDisabled(true);
 
-        moveAction.setPosition(800f, 200f);
-        moveAction.setDuration(5f);
-        rotateAction.setRotation(90f);
-        rotateAction.setDuration(5f);
-        scaleAction.setScale(10f);
-        scaleAction.setDuration(5f);
+        stage.addActor(textField);
+        stage.addActor(micButton);
 
-        myActor.addAction(moveAction);
-        myActor.addAction(rotateAction);
-        myActor.addAction(scaleAction);
+    }
 
-        stage.addActor(myActor);
+    public void setTextFieldText(String text) {
+        textField.setText(" " + text);
     }
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width,height, true);
     }
 
     @Override
     public void dispose() {
         stage.dispose();
+        skin.dispose();
     }
 
     @Override
     public void render() {
-        gl.glClearColor(1, 1, 1, 1);
+        gl.glClearColor(0.7f, 0.7f, 0.7f, 1);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        // Debug methods:
+        //Gdx.app.log("X", "FPS: " + Gdx.graphics.getFramesPerSecond());
+        //SpriteBatch spriteBatch = (SpriteBatch)stage.getBatch();
+        //Gdx.app.log("X", "render calls: " + spriteBatch.totalRenderCalls);
+        //spriteBatch.totalRenderCalls = 0;
     }
 
     @Override

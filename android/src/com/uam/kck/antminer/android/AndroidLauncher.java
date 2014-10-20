@@ -15,23 +15,28 @@ public class AndroidLauncher extends AndroidApplication {
 
     ActionResolverAndroid actionResolver;
 
+    SceneTest sceneTest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         actionResolver = new ActionResolverAndroid(this);
 
-        initialize(new SceneTest(actionResolver));
+        sceneTest = new SceneTest(actionResolver);
+        initialize(sceneTest);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_SPEECH && resultCode == RESULT_OK) {
+            // Get the spoken sentence..
             ArrayList<String> thingsYouSaid =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
-            //TODO: do something with the text
+            // ..and pass it to the textField:
+            sceneTest.setTextFieldText(thingsYouSaid.get(0));
             Gdx.app.log("you said: ", thingsYouSaid.get(0));
         }
     }
