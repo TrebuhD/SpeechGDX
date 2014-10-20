@@ -6,12 +6,13 @@ import android.speech.RecognizerIntent;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
-import com.uam.kck.antminer.SpeechTest;
+import com.uam.kck.antminer.SceneTest;
 
 import java.util.ArrayList;
 
 public class AndroidLauncher extends AndroidApplication {
-    public static final int REQUEST_OK = 1;
+    public static final int REQUEST_SPEECH = 1;
+
     ActionResolverAndroid actionResolver;
 
     @Override
@@ -20,13 +21,13 @@ public class AndroidLauncher extends AndroidApplication {
 
         actionResolver = new ActionResolverAndroid(this);
 
-        initialize(new SpeechTest(actionResolver));
+        initialize(new SceneTest(actionResolver));
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_OK && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_SPEECH && resultCode == RESULT_OK) {
             ArrayList<String> thingsYouSaid =
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
