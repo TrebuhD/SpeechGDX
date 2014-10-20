@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RotateToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 /**
@@ -31,34 +31,16 @@ public class SceneTest implements ApplicationListener {
         }
 
         public MyActor() {
-            setX(0);
-            setY(0);
             setBounds(getX(), getY(), texture.getWidth(), texture.getHeight());
-            addListener(new InputListener() {
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    MyActor actor = ((MyActor)event.getTarget());
-
-                    actor.started = true;
-                    Gdx.app.log(String.valueOf(actor.isStarted()), "smth");
-                    Gdx.app.log("touchdown", "event");
-                    return true;
-                }
-            });
         }
 
         @Override
         public void draw(Batch batch, float parentAlpha) {
-            batch.draw(texture, getX(), getY());
+            batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(), getWidth(),
+                    getHeight(), getScaleX(), getScaleY(), getRotation(), 0, 0,
+                    texture.getWidth(), texture.getHeight(), false, false);
         }
 
-        @Override
-        public void act(float delta) {
-            if(started) {
-                setX(getX()+5);
-                setY(getY()+3);
-            }
-        }
     }
 
     @Override
@@ -68,7 +50,22 @@ public class SceneTest implements ApplicationListener {
         Gdx.input.setInputProcessor(stage);
 
         MyActor myActor = new MyActor();
-        myActor.setTouchable(Touchable.enabled);
+
+        MoveToAction moveAction = new MoveToAction();
+        RotateToAction rotateAction = new RotateToAction();
+        ScaleToAction scaleAction = new ScaleToAction();
+
+        moveAction.setPosition(800f, 200f);
+        moveAction.setDuration(5f);
+        rotateAction.setRotation(90f);
+        rotateAction.setDuration(5f);
+        scaleAction.setScale(10f);
+        scaleAction.setDuration(5f);
+
+        myActor.addAction(moveAction);
+        myActor.addAction(rotateAction);
+        myActor.addAction(scaleAction);
+
         stage.addActor(myActor);
     }
 
