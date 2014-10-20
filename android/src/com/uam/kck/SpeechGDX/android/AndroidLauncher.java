@@ -15,7 +15,11 @@ public class AndroidLauncher extends AndroidApplication {
 
     ActionResolverAndroid actionResolver;
 
+<<<<<<< HEAD:android/src/com/uam/kck/SpeechGDX/android/AndroidLauncher.java
     SpeechGDX speechGDX;
+=======
+    SceneTest sceneTest;
+>>>>>>> 01b5fa2be574fe24616c264916453ac35f218932:android/src/com/uam/kck/antminer/android/AndroidLauncher.java
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +27,13 @@ public class AndroidLauncher extends AndroidApplication {
 
         actionResolver = new ActionResolverAndroid(this);
 
+<<<<<<< HEAD:android/src/com/uam/kck/SpeechGDX/android/AndroidLauncher.java
         speechGDX = new SpeechGDX(actionResolver);
         initialize(speechGDX);
+=======
+        sceneTest = new SceneTest(actionResolver);
+        initialize(sceneTest);
+>>>>>>> 01b5fa2be574fe24616c264916453ac35f218932:android/src/com/uam/kck/antminer/android/AndroidLauncher.java
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -36,7 +45,11 @@ public class AndroidLauncher extends AndroidApplication {
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
             // ..and pass it to the textField:
+<<<<<<< HEAD:android/src/com/uam/kck/SpeechGDX/android/AndroidLauncher.java
             speechGDX.setTextFieldText(thingsYouSaid.get(0));
+=======
+            sceneTest.setTextFieldText(thingsYouSaid.get(0));
+>>>>>>> 01b5fa2be574fe24616c264916453ac35f218932:android/src/com/uam/kck/antminer/android/AndroidLauncher.java
             Gdx.app.log("you said: ", thingsYouSaid.get(0));
         }
     }

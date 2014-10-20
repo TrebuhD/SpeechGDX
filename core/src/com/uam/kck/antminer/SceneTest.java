@@ -1,4 +1,4 @@
-package com.uam.kck.SpeechGDX;
+package com.uam.kck.antminer;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -15,25 +15,28 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 /**
+ * Test environment for Scene2d.
  * Created by hubert on 20.10.14.
  */
-public class SpeechGDX implements ApplicationListener {
+public class SceneTest implements ApplicationListener {
     GL20 gl;
     ActionResolver actionResolver; // this exists to be able to call native Android methods.
 
+    // We create the main stage:
     private Stage stage;
     private Skin skin;
 
     TextField textField;
 
-    public SpeechGDX(ActionResolver actionResolver) { this.actionResolver = actionResolver; }
+    public SceneTest(ActionResolver actionResolver) { this.actionResolver = actionResolver; }
 
-    // Create the button:
+    // We create an actor to perform on our stage:
     public class MicButton extends Actor {
         Texture texture = new Texture(Gdx.files.internal("mic.jpg"));
 
         public MicButton() {
             setBounds(getX(), getY(), texture.getWidth(), texture.getHeight());
+            setPosition(Gdx.graphics.getWidth()/2f - texture.getWidth() / 2, 100);
 
             addListener(new InputListener(){
                 @Override
@@ -61,23 +64,19 @@ public class SpeechGDX implements ApplicationListener {
 
         Gdx.input.setInputProcessor(stage);
 
-        textField = new TextField("\t...", skin);
-        textField.setX(Gdx.graphics.getWidth() / 2 - textField.getWidth() * 2);
-        textField.setY(Gdx.graphics.getHeight() - 300);
-        textField.setWidth(600);
-        textField.setHeight(80);
-
-        textField.setDisabled(true);
-
         MicButton micButton = new MicButton();
         micButton.setTouchable(Touchable.enabled);
-        micButton.setPosition(textField.getX() + textField.getWidth() - micButton.getWidth(),
-                textField.getY() - micButton.getHeight());
+
+        textField = new TextField("\tTap the mic icon to speak", skin);
+        textField.setX(Gdx.graphics.getWidth() / 2 - textField.getWidth() * 2);
+        textField.setY(Gdx.graphics.getHeight() - 300);
+        textField.setWidth(500);
+        textField.setHeight(80);
+        //textField.setDisabled(true);
 
         stage.addActor(textField);
         stage.addActor(micButton);
 
-        actionResolver.showToast("Tap the mic icon to speak", 5000);
     }
 
     public void setTextFieldText(String text) {
@@ -101,7 +100,6 @@ public class SpeechGDX implements ApplicationListener {
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-
         // Debug methods:
         //Gdx.app.log("X", "FPS: " + Gdx.graphics.getFramesPerSecond());
         //SpriteBatch spriteBatch = (SpriteBatch)stage.getBatch();
