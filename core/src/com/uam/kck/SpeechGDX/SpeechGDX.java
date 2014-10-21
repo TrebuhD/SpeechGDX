@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 /**
+ * Main libGDX class.
  * Created by hubert on 20.10.14.
  */
 public class SpeechGDX implements ApplicationListener {
@@ -38,7 +39,7 @@ public class SpeechGDX implements ApplicationListener {
             addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    actionResolver.showSpeechPopup();
+                    actionResolver.recognizeSpeech();
                     return true;
                 }
             });
@@ -50,7 +51,6 @@ public class SpeechGDX implements ApplicationListener {
                     getHeight(), getScaleX(), getScaleY(), getRotation(), 0, 0,
                     texture.getWidth(), texture.getHeight(), false, false);
         }
-
     }
 
     @Override
@@ -67,7 +67,7 @@ public class SpeechGDX implements ApplicationListener {
         textField.setWidth(600);
         textField.setHeight(80);
 
-        textField.setDisabled(true);
+        textField.setDisabled(false); // Keyboard input enabled.
 
         MicButton micButton = new MicButton();
         micButton.setTouchable(Touchable.enabled);
@@ -101,12 +101,6 @@ public class SpeechGDX implements ApplicationListener {
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-
-        // Debug methods:
-        //Gdx.app.log("X", "FPS: " + Gdx.graphics.getFramesPerSecond());
-        //SpriteBatch spriteBatch = (SpriteBatch)stage.getBatch();
-        //Gdx.app.log("X", "render calls: " + spriteBatch.totalRenderCalls);
-        //spriteBatch.totalRenderCalls = 0;
     }
 
     @Override
@@ -117,5 +111,9 @@ public class SpeechGDX implements ApplicationListener {
     @Override
     public void resume() {
 
+    }
+
+    public void showToast(String message) {
+        actionResolver.showToast(message, 5000);
     }
 }
