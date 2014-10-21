@@ -15,7 +15,7 @@ public class AndroidLauncher extends AndroidApplication {
 
     ActionResolverAndroid actionResolver;
 
-    SpeechGDX speechGDX;
+    public static SpeechGDX speechGDX;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class AndroidLauncher extends AndroidApplication {
                     data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
             // ..and pass it to the textField:
-            speechGDX.setTextFieldText(thingsYouSaid.get(0));
+            //speechGDX.setTextFieldText(thingsYouSaid.get(0));
             Gdx.app.log("you said: ", thingsYouSaid.get(0));
         }
     }

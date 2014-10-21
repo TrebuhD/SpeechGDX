@@ -4,14 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
 import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.widget.Toast;
 
 import com.badlogic.gdx.Gdx;
 import com.uam.kck.SpeechGDX.ActionResolver;
 
 /**
- * The class containing native android code. These methods may be called by libGDX.
+ * This class contains native android code. The methods may be called by libGDX.
  * Created by hubert on 19.10.14.
  */
 public class ActionResolverAndroid extends Activity implements ActionResolver {
@@ -35,24 +37,33 @@ public class ActionResolverAndroid extends Activity implements ActionResolver {
         });
     }
 
+//    @Override
+//    public void showSpeechPopup() {
+//        // Use a separate thread:
+//        uiThread.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+//                i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
+//                try {
+//                    // We open the Speech dialog here using a request code
+//                    // and retrieve the spoken text in AndroidLauncher's onActivityResult().
+//                    ((Activity)appContext).startActivityForResult(i, REQUEST_OK);
+//                } catch (Exception e) {
+//                    showToast(e.toString(), 5000);
+//                    Gdx.app.log(ActionResolverAndroid.class.getName(),
+//                            "error initializing speech engine" + e);
+//                }
+//            }
+//        });
+//    }
+
+
     @Override
     public void showSpeechPopup() {
-        // Use a separate thread:
-        uiThread.post(new Runnable() {
-            @Override
-            public void run() {
-                Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
-                try {
-                    // We open the Speech dialog here using a request code
-                    // and retrieve the spoken text in AndroidLauncher's onActivityResult().
-                    ((Activity)appContext).startActivityForResult(i, REQUEST_OK);
-                } catch (Exception e) {
-                    showToast(e.toString(), 5000);
-                    Gdx.app.log(ActionResolverAndroid.class.getName(),
-                            "error initializing speech engine" + e);
-                }
-            }
-        });
+        SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(appContext);
+        speechRecognizer.setRecognitionListener(new Listener());
+
     }
+
 }
