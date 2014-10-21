@@ -19,6 +19,7 @@ import com.uam.kck.SpeechGDX.SpeechGDX;
 public class ActionResolverAndroid extends Activity implements ActionResolver {
 
     Handler uiThread;
+
     Context appContext;
     SpeechGDX gdx;
     SpeechRecognizer speechRecognizer;
@@ -49,7 +50,7 @@ public class ActionResolverAndroid extends Activity implements ActionResolver {
             @Override
             public void run() {
                 speechRecognizer = SpeechRecognizer.createSpeechRecognizer(appContext);
-                speechRecognizer.setRecognitionListener(new MyListener(gdx));
+                speechRecognizer.setRecognitionListener(new MyListener(gdx, appContext));
 
                 Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);

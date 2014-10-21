@@ -1,6 +1,8 @@
 package com.uam.kck.SpeechGDX.android;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -18,9 +20,11 @@ import java.util.ArrayList;
 public class MyListener implements RecognitionListener{
     public static final String TAG = "Listener";
     SpeechGDX gdx;
+    Context context;
 
-    public MyListener(SpeechGDX gdx) { // passing gdx part 3
+    public MyListener(SpeechGDX gdx, Context context) { // passing gdx part 3
         this.gdx = gdx;
+        this.context = context;
     }
 
     @Override
@@ -46,6 +50,8 @@ public class MyListener implements RecognitionListener{
     @Override
     public void onEndOfSpeech() {
         Log.d(TAG, "onEndOfSpeech");
+        Vibrator v = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(50);
     }
 
     @Override
