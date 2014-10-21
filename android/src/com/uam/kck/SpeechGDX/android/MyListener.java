@@ -52,21 +52,31 @@ public class MyListener implements RecognitionListener{
     public void onError(int i) {
         Log.d(TAG, "onError");
         switch (i) {
-            case RecognizerIntent.RESULT_AUDIO_ERROR:
+            case SpeechRecognizer.ERROR_AUDIO:
                 gdx.showToast("Audio error");
                 break;
-            case RecognizerIntent.RESULT_CLIENT_ERROR:
+            case SpeechRecognizer.ERROR_CLIENT:
                 gdx.showToast("Client error");
                 break;
-            case RecognizerIntent.RESULT_NETWORK_ERROR:
+            case SpeechRecognizer.ERROR_SERVER:
+                gdx.showToast("Server error");
+            case SpeechRecognizer.ERROR_NETWORK:
                 gdx.showToast("There was a problem with your connection.");
                 break;
-            case RecognizerIntent.RESULT_NO_MATCH:
+            case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+                gdx.showToast("Connection timed out");
+                break;
+            case SpeechRecognizer.ERROR_NO_MATCH:
                 gdx.showToast("No matches found");
                 break;
-            case 8:
+            case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
                 gdx.showToast("I'm still listening");
                 break;
+            case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                gdx.showToast("Insufficient permissions");
+                break;
+            case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                gdx.showToast("Try again");
             default:
                 gdx.showToast("Error #" + i);
         }
