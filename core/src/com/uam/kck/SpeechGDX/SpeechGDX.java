@@ -62,10 +62,11 @@ public class SpeechGDX implements ApplicationListener {
         Gdx.input.setInputProcessor(stage);
 
         textField = new TextField("\t...", skin);
-        textField.setX(Gdx.graphics.getWidth() / 2 - textField.getWidth() * 2);
-        textField.setY(Gdx.graphics.getHeight() - 300);
-        textField.setWidth(600);
+        textField.setWidth(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 10.0f);
         textField.setHeight(80);
+        float offset = Gdx.graphics.getWidth() - textField.getWidth();
+        textField.setX(offset - offset/2); // Centered
+        textField.setY(Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 2.5f);
 
         textField.setDisabled(false); // Keyboard input enabled.
 
