@@ -25,6 +25,7 @@ public class AndroidLauncher extends AndroidApplication {
 
         speechGDX = new SpeechGDX(actionResolver);
         initialize(speechGDX);
+        actionResolver.setGdx(speechGDX); // Passing gdx part 1
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

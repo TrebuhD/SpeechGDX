@@ -2,25 +2,23 @@ package com.uam.kck.SpeechGDX.android;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
-import android.os.Looper;
-import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.widget.Toast;
 
-import com.badlogic.gdx.Gdx;
 import com.uam.kck.SpeechGDX.ActionResolver;
+import com.uam.kck.SpeechGDX.SpeechGDX;
 
 /**
  * This class contains native android code. The methods may be called by libGDX.
  * Created by hubert on 19.10.14.
  */
 public class ActionResolverAndroid extends Activity implements ActionResolver {
-    public static final int REQUEST_OK = 1;
+//    public static final int REQUEST_OK = 1;
 
     Handler uiThread;
     Context appContext;
+    SpeechGDX gdx;
 
     public ActionResolverAndroid(Context appContext) {
         uiThread = new Handler();
@@ -62,8 +60,11 @@ public class ActionResolverAndroid extends Activity implements ActionResolver {
     @Override
     public void showSpeechPopup() {
         SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(appContext);
-        speechRecognizer.setRecognitionListener(new Listener());
+        speechRecognizer.setRecognitionListener(new MyListener(gdx)); // Passing gdx part 2
+    }
 
+    public void setGdx(SpeechGDX speechGDX) {
+        this.gdx = speechGDX;
     }
 
 }
