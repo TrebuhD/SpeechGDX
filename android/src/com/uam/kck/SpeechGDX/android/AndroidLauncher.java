@@ -41,4 +41,9 @@ public class AndroidLauncher extends AndroidApplication {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        speechGDX.dispose();
+    }
 }

@@ -11,7 +11,7 @@ import com.badlogic.gdx.Gdx;
 import com.uam.kck.SpeechGDX.ActionResolver;
 
 /**
- * The class containing native android code. These methods may be called by libGDX.
+ * This class contains native android code. The methods may be called by libGDX.
  * Created by hubert on 19.10.14.
  */
 public class ActionResolverAndroid extends Activity implements ActionResolver {
@@ -37,7 +37,6 @@ public class ActionResolverAndroid extends Activity implements ActionResolver {
 
     @Override
     public void showSpeechPopup() {
-        // Use a separate thread:
         uiThread.post(new Runnable() {
             @Override
             public void run() {
