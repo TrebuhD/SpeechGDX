@@ -5,11 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -26,6 +28,7 @@ public class SpeechGDX implements ApplicationListener {
     private Skin skin;
 
     TextField textField;
+    MicButton micButton;
 
     public SpeechGDX(ActionResolver actionResolver) { this.actionResolver = actionResolver; }
 
@@ -65,12 +68,12 @@ public class SpeechGDX implements ApplicationListener {
         textField.setWidth(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 10.0f);
         textField.setHeight(80);
         float offset = Gdx.graphics.getWidth() - textField.getWidth();
-        textField.setX(offset - offset/2); // Centered
+        textField.setX(offset - offset / 2); // Centered
         textField.setY(Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 2.5f);
 
         textField.setDisabled(false); // Keyboard input enabled.
 
-        MicButton micButton = new MicButton();
+        micButton = new MicButton();
         micButton.setTouchable(Touchable.enabled);
         micButton.setPosition(textField.getX() + textField.getWidth() - micButton.getWidth(),
                 textField.getY() - micButton.getHeight());
@@ -81,13 +84,23 @@ public class SpeechGDX implements ApplicationListener {
         actionResolver.showToast("Tap the mic icon to speak", 5000);
     }
 
+    public void shakeMicButton() {
+        Action shakeAction = Actions.repeat(2,
+                (Actions.sequence(
+                        Actions.moveBy(10, 0,0.05f),
+                        Actions.moveBy(-10, 0,0.05f)
+                )));
+        micButton.addAction(Actions.sequence(shakeAction));
+        micButton.act(Gdx.graphics.getDeltaTime());
+    }
+
     public void setTextFieldText(String text) {
         textField.setText(" " + text);
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width,height, true);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
