@@ -21,7 +21,6 @@ public class AndroidLauncher extends AndroidApplication {
         speechGDX = new SpeechGDX(actionResolver);
         initialize(speechGDX);
         actionResolver.setGdx(speechGDX);
-        //TODO: Figure a way to stop clunkily passing this object into MyListener.
     }
 
 }

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.uam.kck.SpeechGDX.ActionResolver;
 import com.uam.kck.SpeechGDX.SpeechGDX;
+import com.uam.kck.SpeechGDX.android.Bot.ConversationBot;
 
 /**
  * This class contains native android code. The methods may be called by libGDX.
@@ -24,9 +25,16 @@ public class ActionResolverAndroid extends Activity implements ActionResolver {
     SpeechGDX gdx;
     SpeechRecognizer speechRecognizer;
 
+    private ConversationBot bot;
+
     public ActionResolverAndroid(Context appContext) {
         uiThread = new Handler();
         this.appContext = appContext;
+        try {
+            bot = new ConversationBot();
+        } catch (Exception e) {
+            showToast("Error while initializing bot: " + e, 5000);
+        }
     }
 
     @Override
@@ -50,7 +58,7 @@ public class ActionResolverAndroid extends Activity implements ActionResolver {
             @Override
             public void run() {
                 speechRecognizer = SpeechRecognizer.createSpeechRecognizer(appContext);
-                speechRecognizer.setRecognitionListener(new MyListener(gdx, appContext));
+                speechRecognizer.setRecognitionListener(new MyListener(gdx, appContext, bot));
 
                 Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);

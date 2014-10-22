@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
@@ -28,7 +29,7 @@ public class SpeechGDX implements ApplicationListener {
     private Skin skin;
 
     TextField inputTextField;
-    TextField botResponseTextField;
+    TextArea botResponseTextField;
     MicButton micButton;
 
     public SpeechGDX(ActionResolver actionResolver) { this.actionResolver = actionResolver; }
@@ -65,18 +66,22 @@ public class SpeechGDX implements ApplicationListener {
 
         Gdx.input.setInputProcessor(stage);
 
-        inputTextField = new TextField("\t...", skin);
-        inputTextField.setWidth(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 10.0f);
-        inputTextField.setHeight(80);
-        float offset = Gdx.graphics.getWidth() - inputTextField.getWidth();
-        inputTextField.setX(offset - offset / 2); // Centered
-        inputTextField.setY(Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 2.5f);
+        float textBoxWidth = Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 10.0f;
+        float offset = Gdx.graphics.getWidth() - textBoxWidth;
 
-        botResponseTextField = new TextField(" I'm thinking...", skin);
-        botResponseTextField.setWidth(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 10.0f);
-        botResponseTextField.setHeight(80);
+        inputTextField = new TextField("     ...", skin);
+        inputTextField.setWidth(textBoxWidth);
+        inputTextField.setHeight(80);
+        inputTextField.setX(offset - offset / 2); // Centered
+        inputTextField.setY(Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 2f);
+
+        botResponseTextField = new TextArea("\n I'm thinking...", skin);
+        botResponseTextField.setWidth(textBoxWidth);
+        botResponseTextField.setHeight(120);
+        botResponseTextField.setPrefRows(2);
         botResponseTextField.setX(offset - offset / 2);
-        botResponseTextField.setY(Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 1.2f);
+        botResponseTextField.setY(Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 6.0f);
+        botResponseTextField.setDisabled(true);
 
         micButton = new MicButton();
         micButton.setTouchable(Touchable.enabled);
@@ -100,8 +105,12 @@ public class SpeechGDX implements ApplicationListener {
         micButton.act(Gdx.graphics.getDeltaTime());
     }
 
-    public void setTextFieldText(String text) {
+    public void setInputTextFieldText(String text) {
         inputTextField.setText(" " + text);
+    }
+
+    public void setBotResponseTextFieldText(String text) {
+        botResponseTextField.setText(" " + text);
     }
 
     @Override

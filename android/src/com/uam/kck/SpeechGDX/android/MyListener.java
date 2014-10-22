@@ -4,12 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.speech.RecognitionListener;
-import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
 
 import com.badlogic.gdx.Gdx;
 import com.uam.kck.SpeechGDX.SpeechGDX;
+import com.uam.kck.SpeechGDX.android.Bot.ConversationBot;
 
 import java.util.ArrayList;
 
@@ -21,10 +21,12 @@ public class MyListener implements RecognitionListener{
     public static final String TAG = "Listener";
     SpeechGDX gdx;
     Context context;
+    ConversationBot bot;
 
-    public MyListener(SpeechGDX gdx, Context context) { // passing gdx part 3
+    public MyListener(SpeechGDX gdx, Context context, ConversationBot bot) { // passing gdx part 3
         this.gdx = gdx;
         this.context = context;
+        this.bot = bot;
     }
 
     @Override
@@ -98,7 +100,18 @@ public class MyListener implements RecognitionListener{
         }
 
         Gdx.app.log("results", String.valueOf(data.size()));
-        gdx.setTextFieldText(data.get(0));
+        gdx.setInputTextFieldText(data.get(0));
+
+        try {
+            setBotResponse(data.get(0));
+        } catch (Exception e) {
+            gdx.showToast("Exception: " + e);
+        }
+    }
+
+    private void setBotResponse(String s) throws Exception {
+        String response = bot.ask(s);
+        gdx.setBotResponseTextFieldText("\n " + response);
     }
 
     @Override
