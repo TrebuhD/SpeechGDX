@@ -27,7 +27,8 @@ public class SpeechGDX implements ApplicationListener {
     private Stage stage;
     private Skin skin;
 
-    TextField textField;
+    TextField inputTextField;
+    TextField botResponseTextField;
     MicButton micButton;
 
     public SpeechGDX(ActionResolver actionResolver) { this.actionResolver = actionResolver; }
@@ -64,22 +65,27 @@ public class SpeechGDX implements ApplicationListener {
 
         Gdx.input.setInputProcessor(stage);
 
-        textField = new TextField("\t...", skin);
-        textField.setWidth(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 10.0f);
-        textField.setHeight(80);
-        float offset = Gdx.graphics.getWidth() - textField.getWidth();
-        textField.setX(offset - offset / 2); // Centered
-        textField.setY(Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 2.5f);
+        inputTextField = new TextField("\t...", skin);
+        inputTextField.setWidth(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 10.0f);
+        inputTextField.setHeight(80);
+        float offset = Gdx.graphics.getWidth() - inputTextField.getWidth();
+        inputTextField.setX(offset - offset / 2); // Centered
+        inputTextField.setY(Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 2.5f);
 
-        textField.setDisabled(false); // Keyboard input enabled.
+        botResponseTextField = new TextField(" I'm thinking...", skin);
+        botResponseTextField.setWidth(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 10.0f);
+        botResponseTextField.setHeight(80);
+        botResponseTextField.setX(offset - offset / 2);
+        botResponseTextField.setY(Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 1.2f);
 
         micButton = new MicButton();
         micButton.setTouchable(Touchable.enabled);
-        micButton.setPosition(textField.getX() + textField.getWidth() - micButton.getWidth(),
-                textField.getY() - micButton.getHeight());
+        micButton.setPosition(inputTextField.getX() + inputTextField.getWidth() - micButton.getWidth(),
+                inputTextField.getY() - micButton.getHeight());
 
-        stage.addActor(textField);
+        stage.addActor(inputTextField);
         stage.addActor(micButton);
+        stage.addActor(botResponseTextField);
 
         actionResolver.showToast("Tap the mic icon to speak", 5000);
     }
@@ -95,7 +101,7 @@ public class SpeechGDX implements ApplicationListener {
     }
 
     public void setTextFieldText(String text) {
-        textField.setText(" " + text);
+        inputTextField.setText(" " + text);
     }
 
     @Override
