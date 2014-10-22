@@ -21,7 +21,7 @@ public class ConversationBot {
     public ConversationBot() throws Exception {
         factory = new ChatterBotFactory();
 
-        bot = factory.create(ChatterBotType.JABBERWACKY);
+        bot = factory.create(ChatterBotType.CLEVERBOT); // I found it a bit faster than Cleverbot.
         botSession = bot.createSession();
     }
 
@@ -42,6 +42,11 @@ public class ConversationBot {
                 Gdx.app.log("Exception while getting a response from bot", e.getMessage());
             }
             return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
         }
     }
 

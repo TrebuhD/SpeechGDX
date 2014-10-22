@@ -88,6 +88,7 @@ public class SpeechGDX implements ApplicationListener {
         micButton.setPosition(inputTextField.getX() + inputTextField.getWidth() - micButton.getWidth(),
                 inputTextField.getY() - micButton.getHeight());
 
+
         stage.addActor(inputTextField);
         stage.addActor(micButton);
         stage.addActor(botResponseTextField);

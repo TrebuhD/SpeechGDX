@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
 import com.badlogic.gdx.Gdx;
@@ -12,6 +13,7 @@ import com.uam.kck.SpeechGDX.SpeechGDX;
 import com.uam.kck.SpeechGDX.android.Bot.ConversationBot;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Custom RecognitionListener.
@@ -22,11 +24,26 @@ public class MyListener implements RecognitionListener{
     SpeechGDX gdx;
     Context context;
     ConversationBot bot;
+    TextToSpeech tts;
 
-    public MyListener(SpeechGDX gdx, Context context, ConversationBot bot) { // passing gdx part 3
+    public MyListener(final SpeechGDX gdx, Context context, ConversationBot bot) { // passing gdx part 3
         this.gdx = gdx;
         this.context = context;
         this.bot = bot;
+        tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                if (i == TextToSpeech.SUCCESS) {
+                    int result = tts.setLanguage(Locale.US);
+                    if (result == TextToSpeech.LANG_MISSING_DATA ||
+                            result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Gdx.app.log("Error", " this language is not supported.");
+                    }
+                }
+                else
+                    Gdx.app.log("Error", " error initializing text-to-speech engine.");
+            }
+        });
     }
 
     @Override
@@ -40,8 +57,8 @@ public class MyListener implements RecognitionListener{
     }
 
     @Override
-    public void onRmsChanged(float v) {
-        // Detects change in volume. This gets called too often and spams logcat.
+    public void onRmsChanged(float volumeDB) {
+//        float volumeNo = (volumeDB+120)/1.8f; // Normalize to 0-100 scale.
     }
 
     @Override
@@ -112,6 +129,12 @@ public class MyListener implements RecognitionListener{
     private void setBotResponse(String s) throws Exception {
         String response = bot.ask(s);
         gdx.setBotResponseTextFieldText("\n " + response);
+        speakOutLoud(response);
+    }
+
+    private void speakOutLoud(String sentence) {
+        if(sentence == null || "".equals(sentence)) { return; }
+        else tts.speak(sentence, TextToSpeech.QUEUE_FLUSH, null);
     }
 
     @Override
