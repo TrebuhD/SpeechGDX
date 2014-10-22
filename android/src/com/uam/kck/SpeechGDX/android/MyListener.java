@@ -34,7 +34,7 @@ public class MyListener implements RecognitionListener{
             @Override
             public void onInit(int i) {
                 if (i == TextToSpeech.SUCCESS) {
-                    int result = tts.setLanguage(Locale.US);
+                    int result = tts.setLanguage(Locale.FRENCH);
                     if (result == TextToSpeech.LANG_MISSING_DATA ||
                             result == TextToSpeech.LANG_NOT_SUPPORTED) {
                         Gdx.app.log("Error", " this language is not supported.");
@@ -69,6 +69,7 @@ public class MyListener implements RecognitionListener{
     @Override
     public void onEndOfSpeech() {
         Log.d(TAG, "onEndOfSpeech");
+        gdx.stopMicButtonPulse();
         Vibrator v = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(50);
     }
@@ -120,14 +121,14 @@ public class MyListener implements RecognitionListener{
         gdx.setInputTextFieldText(data.get(0));
 
         try {
-            setBotResponse(data.get(0));
+            handleResult(data.get(0));
         } catch (Exception e) {
             gdx.showToast("Exception: " + e);
         }
     }
 
-    private void setBotResponse(String s) throws Exception {
-        String response = bot.ask(s);
+    private void handleResult(String sentence) throws Exception {
+        String response = bot.ask(sentence);
         gdx.setBotResponseTextFieldText("\n " + response);
         speakOutLoud(response);
     }

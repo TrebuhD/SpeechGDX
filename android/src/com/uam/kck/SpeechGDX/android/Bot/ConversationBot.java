@@ -21,7 +21,7 @@ public class ConversationBot {
     public ConversationBot() throws Exception {
         factory = new ChatterBotFactory();
 
-        bot = factory.create(ChatterBotType.CLEVERBOT); // I found it a bit faster than Cleverbot.
+        bot = factory.create(ChatterBotType.JABBERWACKY); // I found it a bit faster than Cleverbot.
         botSession = bot.createSession();
     }
 

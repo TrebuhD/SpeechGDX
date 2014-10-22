@@ -65,7 +65,7 @@ public class ActionResolverAndroid extends Activity implements ActionResolver {
                         RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                 i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "en");
                 i.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
-                gdx.shakeMicButton();
+                gdx.actionPulseMicButton();
                 speechRecognizer.startListening(i);
             }
         });

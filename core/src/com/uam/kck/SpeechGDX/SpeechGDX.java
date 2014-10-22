@@ -25,21 +25,51 @@ public class SpeechGDX implements ApplicationListener {
     GL20 gl;
     ActionResolver actionResolver; // this exists to be able to call native Android methods.
 
+    public SpeechGDX(ActionResolver actionResolver) { this.actionResolver = actionResolver; }
+
     private Stage stage;
     private Skin skin;
 
     TextField inputTextField;
     TextArea botResponseTextField;
     MicButton micButton;
+    Action shakeAction;
 
-    public SpeechGDX(ActionResolver actionResolver) { this.actionResolver = actionResolver; }
+    public void actionPulseMicButton() {
+        shakeAction = Actions.forever(
+                (Actions.sequence(
+                        Actions.scaleTo(1.1f, 1.1f, 0.2f),
+                        Actions.scaleTo(1.0f, 1.0f, 0.2f),
+                        Actions.scaleTo(1.1f, 1.1f, 0.2f),
+                        Actions.scaleTo(1.0f, 1.0f, 0.2f),
+                        Actions.delay(0.6f)
+                )));
+        if (micButton.getActions().size == 0) {
+            micButton.addAction(shakeAction);
+            micButton.act(Gdx.graphics.getDeltaTime());
+        }
+    }
+
+    public void stopMicButtonPulse() {
+        micButton.removeAction(shakeAction);
+        micButton.setScale(1.0f, 1.0f);
+    }
+
+    public void setInputTextFieldText(String text) {
+        inputTextField.setText(" " + text);
+    }
+
+    public void setBotResponseTextFieldText(String text) {
+        botResponseTextField.setText(" " + text);
+    }
 
     // Create the button:
     public class MicButton extends Actor {
         Texture texture = new Texture(Gdx.files.internal("mic.jpg"));
 
         public MicButton() {
-            setBounds(getX(), getY(), texture.getWidth(), texture.getHeight());
+            setBounds(getX(), getY(), texture.getWidth()/2.0f, texture.getHeight()/2.0f);
+            setOrigin(texture.getWidth()/4.0f, texture.getHeight()/4.0f);
 
             addListener(new InputListener(){
                 @Override
@@ -88,30 +118,11 @@ public class SpeechGDX implements ApplicationListener {
         micButton.setPosition(inputTextField.getX() + inputTextField.getWidth() - micButton.getWidth(),
                 inputTextField.getY() - micButton.getHeight());
 
-
         stage.addActor(inputTextField);
         stage.addActor(micButton);
         stage.addActor(botResponseTextField);
 
         actionResolver.showToast("Tap the mic icon to speak", 5000);
-    }
-
-    public void shakeMicButton() {
-        Action shakeAction = Actions.repeat(2,
-                (Actions.sequence(
-                        Actions.moveBy(10, 0,0.05f),
-                        Actions.moveBy(-10, 0,0.05f)
-                )));
-        micButton.addAction(Actions.sequence(shakeAction));
-        micButton.act(Gdx.graphics.getDeltaTime());
-    }
-
-    public void setInputTextFieldText(String text) {
-        inputTextField.setText(" " + text);
-    }
-
-    public void setBotResponseTextFieldText(String text) {
-        botResponseTextField.setText(" " + text);
     }
 
     @Override
