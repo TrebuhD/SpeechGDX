@@ -72,7 +72,7 @@ public class SpeechGDX implements ApplicationListener {
         inputTextField.setX(offset - offset / 2); // Centered
         inputTextField.setY(Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 2.5f);
 
-        botResponseTextField = new TextField(" I'm thinking...", skin);
+        botResponseTextField = new TextField(" I'm twhinking...", skin);
         botResponseTextField.setWidth(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 10.0f);
         botResponseTextField.setHeight(80);
         botResponseTextField.setX(offset - offset / 2);
