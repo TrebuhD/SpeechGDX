@@ -34,7 +34,7 @@ public class MyListener implements RecognitionListener{
             @Override
             public void onInit(int i) {
                 if (i == TextToSpeech.SUCCESS) {
-                    int result = tts.setLanguage(Locale.FRENCH);
+                    int result = tts.setLanguage(Locale.JAPANESE);
                     if (result == TextToSpeech.LANG_MISSING_DATA ||
                             result == TextToSpeech.LANG_NOT_SUPPORTED) {
                         Gdx.app.log("Error", " this language is not supported.");

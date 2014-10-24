@@ -96,7 +96,7 @@ public class SpeechGDX implements ApplicationListener {
 
         Gdx.input.setInputProcessor(stage);
 
-        float textBoxWidth = Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 10.0f;
+        float textBoxWidth = Gdx.graphics.getWidth() - (Gdx.graphics.getWidth() / 10.0f);
         float offset = Gdx.graphics.getWidth() - textBoxWidth;
 
         inputTextField = new TextField("     ...", skin);
@@ -105,16 +105,10 @@ public class SpeechGDX implements ApplicationListener {
         inputTextField.setX(offset - offset / 2); // Centered
         inputTextField.setY(Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 2f);
 
-<<<<<<< HEAD
-        botResponseTextField = new TextField(" I'm twhinking...", skin);
-        botResponseTextField.setWidth(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 10.0f);
-        botResponseTextField.setHeight(80);
-=======
         botResponseTextField = new TextArea("\n I'm thinking...", skin);
         botResponseTextField.setWidth(textBoxWidth);
         botResponseTextField.setHeight(120);
         botResponseTextField.setPrefRows(2);
->>>>>>> 369b4abb10a76a7adcbf72eb1635d4d4bee69c9d
         botResponseTextField.setX(offset - offset / 2);
         botResponseTextField.setY(Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 6.0f);
         botResponseTextField.setDisabled(true);
