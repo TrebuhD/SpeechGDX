@@ -20,7 +20,7 @@ import java.util.Locale;
  * Created by hubert on 21.10.14.
  */
 public class MyListener implements RecognitionListener{
-    public static final String TAG = "Listener";
+    public static final String TAG = "myListener";
     SpeechGDX gdx;
     Context context;
     ConversationBot bot;
@@ -34,7 +34,7 @@ public class MyListener implements RecognitionListener{
             @Override
             public void onInit(int i) {
                 if (i == TextToSpeech.SUCCESS) {
-                    int result = tts.setLanguage(Locale.JAPANESE);
+                    int result = tts.setLanguage(Locale.UK);
                     if (result == TextToSpeech.LANG_MISSING_DATA ||
                             result == TextToSpeech.LANG_NOT_SUPPORTED) {
                         Gdx.app.log("Error", " this language is not supported.");
@@ -76,7 +76,8 @@ public class MyListener implements RecognitionListener{
 
     @Override
     public void onError(int i) {
-        Log.d(TAG, "onError");
+        Log.d(TAG, "Error # " + i);
+        gdx.stopMicButtonPulse();
         switch (i) {
             case SpeechRecognizer.ERROR_AUDIO:
                 gdx.showToast("Audio error");
@@ -86,6 +87,7 @@ public class MyListener implements RecognitionListener{
                 break;
             case SpeechRecognizer.ERROR_SERVER:
                 gdx.showToast("Server error");
+                break;
             case SpeechRecognizer.ERROR_NETWORK:
                 gdx.showToast("There was a problem with your connection.");
                 break;
@@ -103,6 +105,7 @@ public class MyListener implements RecognitionListener{
                 break;
             case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
                 gdx.showToast("Try again");
+                break;
             default:
                 gdx.showToast("Error #" + i);
         }
@@ -134,7 +137,7 @@ public class MyListener implements RecognitionListener{
     }
 
     private void speakOutLoud(String sentence) {
-        if(sentence == null || "".equals(sentence)) { return; }
+        if(sentence == null || "".equals(sentence)) { return; } // Ignore empty input.
         else tts.speak(sentence, TextToSpeech.QUEUE_FLUSH, null);
     }
 
